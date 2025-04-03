@@ -13,15 +13,35 @@ A GraphQL API for analyzing sales, customer spending, and product performance fo
 
 ## Prerequisites
 
+### Local Development
 - Node.js (v14 or higher)
 - MongoDB (v4.4 or higher)
 - npm or yarn
 
+### Docker Deployment
+- Docker
+- Docker Compose
+
 ## Installation
+
+### Environment Setup (Important!)
+1. Create a `.env` file in the root directory:
+```bash
+cp .env.example.js .env
+```
+
+2. Fill in the required environment variables in `.env`:
+```env
+MONGO_URI=your_mongodb_connection_string
+APP_PORT=4000
+```
+Note: Replace `your_mongodb_connection_string` with your actual MongoDB connection string.
+
+### Local Development
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/SagarM21/sales-analytics-api.git
 cd sales-analytics-api
 ```
 
@@ -30,25 +50,46 @@ cd sales-analytics-api
 npm install
 ```
 
-3. Create a `.env` file in the root directory with the following variables:
-```env
-MONGO_URI=mongodb://localhost:27017/sales_analytics
-APP_PORT=4000
-```
-
-4. Import the seed data:
+3. Import the seed data:
 ```bash
 npm run seed
 ```
 
+### Docker Deployment
+
+1. Clone the repository:
+```bash
+git clone https://github.com/SagarM21/sales-analytics-api.git
+cd sales-analytics-api
+```
+
+2. Build and start the containers:
+```bash
+docker compose up --build
+```
+
+The application will be available at `http://localhost:<PORT>/api`
+
 ## Running the Application
 
+### Local Development
 Start the development server:
 ```bash
 npm start
 ```
 
-The GraphQL playground will be available at `http://localhost:4000/api`
+### Docker
+Start the containers:
+```bash
+docker compose up
+```
+
+Stop the containers:
+```bash
+docker compose down
+```
+
+The GraphQL playground will be available at `http://localhost:<PORT>/api`
 
 ## API Documentation
 
@@ -226,7 +267,10 @@ sales-analytics-api/
 │   └── seed/
 │       └── seed.js
 ├── .env
+├── .env.example.js
 ├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
 ├── package.json
 └── README.md
 ```

@@ -38,11 +38,14 @@ const resolvers = {
                     return { customerId, totalSpent: 0, averageOrderValue: 0, lastOrderDate: null };
                 }
 
+              
+                const lastOrderDate = result[0].lastOrderDate ? new Date(result[0].lastOrderDate).toISOString() : null;
+
                 return {
                     customerId,
                     totalSpent: result[0].totalSpent,
                     averageOrderValue: result[0].averageOrderValue,
-                    lastOrderDate: result[0].lastOrderDate
+                    lastOrderDate
                 };
             } catch (error) {
                 console.error('Error in getCustomerSpending:', error);

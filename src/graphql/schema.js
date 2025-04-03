@@ -21,17 +21,19 @@ const typeDefs = gql`
         revenue: Float
     }
     type Customer {
-        _id: ID!
-        name: String
-        email: String
-        age: Int
+        id: ID!
+        name: String!
+        email: String!
+        age: Int!
+        location: String!
+        gender: String!
     }
     type Product {
-        _id: ID!
-        name: String
-        category: String
-        price: Float
-        stock: Int
+        id: ID!
+        name: String!
+        category: String!
+        price: Float!
+        stock: Int!
     }
     type OrderItem {
         productId: ID!
@@ -39,32 +41,37 @@ const typeDefs = gql`
         priceAtPurchase: Float
     }
     type Order {
-        _id: ID!
+        id: ID!
         customerId: ID!
-        products: [OrderItem]
-        totalAmount: Float
-        orderDate: String
-        status: String
+        products: [OrderProduct!]!
+        totalAmount: Float!
+        orderDate: String!
+        status: String!
+    }
+    type OrderProduct {
+        productId: ID!
+        quantity: Int!
+        priceAtPurchase: Float!
     }
     type OrderResponse {
         success: Boolean!
-        message: String
+        message: String!
         order: Order
     }
     type PaginatedOrders {
-        orders: [Order]
-        totalCount: Int
-        page: Int
-        pageSize: Int
-        totalPages: Int
+        orders: [Order!]!
+        totalCount: Int!
+        page: Int!
+        pageSize: Int!
+        totalPages: Int!
     }
     type PaginatedProducts {
-        products: [Product]
-        totalCount: Int
-        page: Int
-        pageSize: Int
-        totalPages: Int
-        categories: [String]
+        products: [Product!]!
+        totalCount: Int!
+        page: Int!
+        pageSize: Int!
+        totalPages: Int!
+        categories: [String!]!
     }
     input OrderItemInput {
         productId: ID!
@@ -81,12 +88,20 @@ const typeDefs = gql`
         inStock: Boolean
         search: String
     }
+    input OrderInput {
+        customerId: ID!
+        products: [OrderProductInput!]!
+    }
+    input OrderProductInput {
+        productId: ID!
+        quantity: Int!
+    }
     type Query {
         getCustomerSpending(customerId: ID!): CustomerSpending
         getTopSellingProducts(limit: Int!): [TopProduct]
         getSalesAnalytics(startDate: String!, endDate: String!): SalesAnalytics
         getCustomers(limit: Int!): [Customer]
-        getCustomerOrders(customerId: ID!, page: Int = 1, pageSize: Int = 10): PaginatedOrders
+        getCustomerOrders(customerId: ID!, page: Int, pageSize: Int): PaginatedOrders
         getProducts(
             page: Int = 1
             pageSize: Int = 10
@@ -96,7 +111,7 @@ const typeDefs = gql`
         ): PaginatedProducts
     }
     type Mutation {
-        placeOrder(input: PlaceOrderInput!): OrderResponse
+        placeOrder(input: OrderInput!): OrderResponse!
     }
 `;
 module.exports = typeDefs;

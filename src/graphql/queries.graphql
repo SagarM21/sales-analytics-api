@@ -1,0 +1,102 @@
+# Get customer spending analytics
+query GetCustomerSpending($customerId: ID!) {
+  getCustomerSpending(customerId: $customerId) {
+    customerId
+    totalSpent
+    averageOrderValue
+    lastOrderDate
+  }
+}
+
+# Get top selling products
+query GetTopSellingProducts($limit: Int!) {
+  getTopSellingProducts(limit: $limit) {
+    productId
+    name
+    totalSold
+  }
+}
+
+# Get sales analytics for a date range
+query GetSalesAnalytics($startDate: String!, $endDate: String!) {
+  getSalesAnalytics(startDate: $startDate, endDate: $endDate) {
+    totalRevenue
+    completedOrders
+    categoryBreakdown {
+      category
+      revenue
+    }
+  }
+}
+
+# Get paginated customer orders
+query GetCustomerOrders($customerId: ID!, $page: Int, $pageSize: Int) {
+  getCustomerOrders(customerId: $customerId, page: $page, pageSize: $pageSize) {
+    orders {
+      id
+      customerId
+      totalAmount
+      orderDate
+      status
+      products {
+        productId
+        quantity
+        priceAtPurchase
+      }
+    }
+    totalCount
+    page
+    pageSize
+    totalPages
+  }
+}
+
+# Get paginated products with filtering
+query GetProducts(
+  $page: Int
+  $pageSize: Int
+  $filter: ProductFilter
+  $sortBy: String
+  $sortOrder: String
+) {
+  getProducts(
+    page: $page
+    pageSize: $pageSize
+    filter: $filter
+    sortBy: $sortBy
+    sortOrder: $sortOrder
+  ) {
+    products {
+      id
+      name
+      category
+      price
+      stock
+    }
+    totalCount
+    page
+    pageSize
+    totalPages
+    categories
+  }
+}
+
+# Place a new order
+mutation PlaceOrder($input: OrderInput!) {
+  placeOrder(input: $input) {
+    success
+    message
+    order {
+      id
+      customerId
+      totalAmount
+      orderDate
+      status
+      products {
+        productId
+        quantity
+        priceAtPurchase
+      }
+    }
+  }
+} 
